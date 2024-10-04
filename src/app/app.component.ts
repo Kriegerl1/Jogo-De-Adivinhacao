@@ -15,6 +15,8 @@ export class AppComponent {
   public hidder: string = "d-none";
   public message: string = "";
   public alert: string = "";
+  public difficult: string = "";
+  public alertDifficult: string = "secondary";
 
   public percentOfProgressBar: number = 0;
   public amountPossibility: number = 50;
@@ -34,7 +36,16 @@ export class AppComponent {
     this.replay();
   }
 
+  public selectDifficult(difficult: string): void {
+    this.difficult = difficult;
+
+    if (difficult == "Fácil") this.alertDifficult = "primary";
+    else if (difficult == "Médio") this.alertDifficult = "warning";
+    else this.alertDifficult = "danger";
+  }
+
   public replay(): void {
+    this.triedNumbers = [];
     this.amountPossibility = 50;
     this.score = 1000;
 
@@ -52,11 +63,8 @@ export class AppComponent {
     this.alert = "";
   }
 
-  public calculateScore(chooseNumber:number) : number{
-
-    this.result = this.hiddenNumber - chooseNumber; 
-
-
+  public calculateScore(chooseNumber: number): number {
+    this.result = this.hiddenNumber - chooseNumber;
 
     return this.result;
   }
@@ -82,7 +90,6 @@ export class AppComponent {
 
       this.helperBar = this.progressBarWidht;
       this.gameIsOver = true;
-
     } else if (this.chooseNumber < this.hiddenNumber) {
       this.message = "Tente um numero mais alto!";
       this.progressBarColor = "bg-warning";
@@ -91,7 +98,6 @@ export class AppComponent {
 
       this.helperBar = this.percentOfProgressBar;
     } else {
-
       this.message = "Tente um numero mais baixo!";
       this.progressBarColor = "bg-warning";
       this.hidder = "";

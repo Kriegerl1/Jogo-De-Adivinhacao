@@ -42,22 +42,34 @@
             Dificuldades
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item">Fácil</a>
-            <a class="dropdown-item">Médio</a>
-            <a class="dropdown-item">Difícil</a>
+            <a (click)="selectDifficult('Fácil')" class="dropdown-item"
+              >Fácil</a
+            >
+            <a (click)="selectDifficult('Médio')" class="dropdown-item"
+              >Médio</a
+            >
+            <a (click)="selectDifficult('Difícil')" class="dropdown-item"
+              >Difícil</a
+            >
           </div>
         </li>
       </ul>
     </div>
-    <p class="alert alert-success">Score: {{ score }}</p>
+    <div class="alert alert-{{alertDifficult}}">
+      Score:
+        <span *ngIf="difficult.length > 0">
+          {{ score }}
+        </span>
+    </div>
   </div>
 </nav>
-<main>
+<main *ngIf="difficult.length > 0">
   <div class="container d-flex flex-column justify-content-center min-vh-auto">
     <div
       class="container d-flex flex-column justify-content-center align-items-center my-5"
     >
-      <h5 *ngIf="gameIsOver == false" class="alert alert-{{ alert }} m-5 px-5">
+      <h1 class="alert alert-{{ alertDifficult }}">{{ difficult }}</h1>
+      <h5 *ngIf="gameIsOver == false" class="alert alert-{{ alert }} px-5">
         {{ message }}
       </h5>
       <!-- <h3 class="alert alert-secondary px-5">{{ hiddenNumber }}</h3> -->
