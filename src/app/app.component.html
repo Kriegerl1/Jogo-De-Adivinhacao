@@ -42,14 +42,14 @@
             Dificuldades
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a (click)="selectDifficult('Fácil')" class="dropdown-item"
-              >Fácil</a
+            <button (click)="selectDifficult('Fácil')" class="dropdown-item"
+              >Fácil</button
             >
-            <a (click)="selectDifficult('Médio')" class="dropdown-item"
-              >Médio</a
+            <button (click)="selectDifficult('Médio')" class="dropdown-item"
+              >Médio</button
             >
-            <a (click)="selectDifficult('Difícil')" class="dropdown-item"
-              >Difícil</a
+            <button (click)="selectDifficult('Difícil')" class="dropdown-item"
+              >Difícil</button
             >
           </div>
         </li>
@@ -68,11 +68,13 @@
     <div
       class="container d-flex flex-column justify-content-center align-items-center my-5"
     >
+      <h1 class="alert alert-{{ alertDifficult }}">quantidade de numeros {{ amountPossibility }}</h1>
+      <h1 class="alert alert-{{ alertDifficult }}">vidas {{ lives }}</h1>
       <h1 class="alert alert-{{ alertDifficult }}">{{ difficult }}</h1>
       <h5 *ngIf="gameIsOver == false" class="alert alert-{{ alert }} px-5">
         {{ message }}
       </h5>
-      <!-- <h3 class="alert alert-secondary px-5">{{ hiddenNumber }}</h3> -->
+      <h3 class="alert alert-secondary px-5">{{ hiddenNumber }}</h3>
       <br />
       <div
         class="card card-ro d-flex flex-column align-items-center p-5 shadow p-3 mb-5 bg-white rounded"
