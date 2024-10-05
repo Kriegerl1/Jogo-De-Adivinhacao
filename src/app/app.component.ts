@@ -1,11 +1,12 @@
-import { NgForOf, NgIf } from "@angular/common";
+import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { rankMember } from "./models/rank-member";
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [FormsModule, NgIf, NgForOf],
+  imports: [FormsModule, NgIf, NgForOf, NgClass],
   templateUrl: "app.component.html",
   styles: [],
 })
@@ -19,6 +20,7 @@ export class AppComponent {
   public amountPossibility: number = 0;
   public gameIsOver: boolean = false;
   public triedNumbers: number[] = [];
+  public rankingScore: rankMember[] = [];
   public result: any;
 
   public progressBarColor: string = "";
@@ -29,23 +31,33 @@ export class AppComponent {
   public message: string = "";
   public alert: string = "";
   public alertDifficult: string = "secondary";
+  public rememberDifficult: string = this.difficult;
 
   constructor() {
     this.replay();
   }
 
+  public ranking(): void {
+    this.gameIsOver = true;
+    this.selectDifficult("");
+  }
+
   public selectDifficult(difficult: string): void {
     this.difficult = difficult;
+    this.gameIsOver = false;
 
     switch (difficult) {
       case "Fácil":
         this.setupGame(10, "primary", 3);
+        this.rememberDifficult = this.difficult;
         break;
       case "Médio":
         this.setupGame(50, "warning", 5);
+        this.rememberDifficult = this.difficult;
         break;
       case "Difícil":
         this.setupGame(100, "danger", 7);
+        this.rememberDifficult = this.difficult;
         break;
     }
   }
@@ -63,6 +75,7 @@ export class AppComponent {
 
   public replay(): void {
     this.triedNumbers = [];
+
     this.score = 100;
     this.gameIsOver = false;
 
@@ -76,7 +89,7 @@ export class AppComponent {
     this.message = "";
     this.alert = "";
 
-    this.selectDifficult(this.difficult);
+    this.selectDifficult(this.rememberDifficult);
   }
 
   public calculateScore(chooseNumber: number): number {
@@ -112,6 +125,13 @@ export class AppComponent {
   private processGuess(): void {
     if (this.chooseNumber == this.hiddenNumber) {
       this.endGame("Você Venceu!", "bg-success", "success");
+
+      const registeredRankMember: rankMember = {
+        scoreRanking: this.score,
+        difficultRanking: this.rememberDifficult,
+      };
+
+      this.rankingScore.push(registeredRankMember);
     } else if (this.chooseNumber < this.hiddenNumber) {
       this.handleIncorrectGuess("Tente um número mais alto!");
       this.calculateScore(this.chooseNumber);

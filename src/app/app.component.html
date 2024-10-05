@@ -1,133 +1,80 @@
-<nav
-  class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between px-5 flex-nowrap"
->
-  <a class="navbar-brand" href="https://portf-leokode.netlify.app/">
-    <img
-      src="https://portf-leokode.netlify.app/assets/scr/media/Logo.png"
-      width="50"
-      height="50"
-      class="d-inline-block align-center"
-      alt="Logo"
-    />
-    {{ title }}
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm px-5">
+  <a class="navbar-brand d-flex align-items-center" href="https://portf-leokode.netlify.app/">
+    <img src="https://portf-leokode.netlify.app/assets/scr/media/Logo.png" width="50" height="50" alt="Logo" />
+    <h1 class="ms-3 h3 mb-0 text-primary">{{ title }}</h1>
   </a>
-  <div class="d-flex align-items-center gap-4">
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarNavDropdown"
-      aria-controls="navbarNavDropdown"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Jogo</a>
-        </li>
-        <li class="nav-item"></li>
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="navbarDropdownMenuLink"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Dificuldades
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <button (click)="selectDifficult('Fácil')" class="dropdown-item"
-              >Fácil</button
-            >
-            <button (click)="selectDifficult('Médio')" class="dropdown-item"
-              >Médio</button
-            >
-            <button (click)="selectDifficult('Difícil')" class="dropdown-item"
-              >Difícil</button
-            >
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="alert alert-{{alertDifficult}}">
-      Score:
-        <span *ngIf="difficult.length > 0">
-          {{ score }}
-        </span>
-    </div>
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <button class="nav-link btn btn-link text-primary" (click)="selectDifficult(this.rememberDifficult)">Jogo</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link btn btn-link text-primary" (click)="ranking()">Ranking</button>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-primary" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dificuldades</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <button (click)="selectDifficult('Fácil')" class="dropdown-item">Fácil</button>
+          <button (click)="selectDifficult('Médio')" class="dropdown-item">Médio</button>
+          <button (click)="selectDifficult('Difícil')" class="dropdown-item">Difícil</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="alert alert-{{ alertDifficult }} p-2 mb-0">
+    Score: <strong>{{ score }}</strong>
   </div>
 </nav>
-<main *ngIf="difficult.length > 0">
-  <div class="container d-flex flex-column justify-content-center min-vh-auto">
-    <div
-      class="container d-flex flex-column justify-content-center align-items-center my-5"
-    >
-      <h1 class="alert alert-{{ alertDifficult }}">quantidade de numeros {{ amountPossibility }}</h1>
-      <h1 class="alert alert-{{ alertDifficult }}">vidas {{ lives }}</h1>
-      <h1 class="alert alert-{{ alertDifficult }}">{{ difficult }}</h1>
-      <h5 *ngIf="gameIsOver == false" class="alert alert-{{ alert }} px-5">
-        {{ message }}
-      </h5>
-      <h3 class="alert alert-secondary px-5">{{ hiddenNumber }}</h3>
-      <br />
-      <div
-        class="card card-ro d-flex flex-column align-items-center p-5 shadow p-3 mb-5 bg-white rounded"
-      >
-        <h4>Digite um número para Iniciar o jogo.</h4>
-        <div class="card-body d-flex flex-column gap-2">
-          <input
-            [(ngModel)]="chooseNumber"
-            type="number"
-            class="form-control"
-            placeholder="Digite um número"
-            min="1"
-            max="{{ amountPossibility }}"
-          />
 
-          <button
-            *ngIf="gameIsOver == false"
-            (click)="guessNumber()"
-            class="btn btn-primary"
-          >
-            Adivinhar
-          </button>
-          <button
-            *ngIf="gameIsOver == true"
-            (click)="replay()"
-            class="btn btn-success"
-          >
-            Jogar Novamente!
-          </button>
-        </div>
-        <div
-          class="card p-3 align-items-center {{ hidder }}"
-          style="width: {{ helperBar }}%; min-width: 20%;"
-        >
-          <div
-            class="progress progress-bar-striped {{ progressBarColor }}"
-            style="width: {{ helperBar }}%; min-width: 1%;"
-          ></div>
-          <h3 *ngIf="gameIsOver == true" class="alert alert-{{ alert }} m-3">
-            {{ message }}
-          </h3>
-        </div>
+<section *ngIf="difficult.length == 0" class="container mt-5">
+  <div class="d-flex justify-content-center">
+    <ul class="list-group w-75 shadow-lg">
+      <li *ngFor="let item of rankingScore; index as counter" class="list-group-item d-flex justify-content-between align-items-center">
+        <span>{{counter}} - {{item.difficultRanking}}</span>
+        <span class="badge bg-primary rounded-pill">{{item.scoreRanking}}</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<main *ngIf="difficult.length > 0" class="container mt-5">
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <div class="card w-75 shadow-lg p-4 rounded-3 border-0">
+      <div class="d-flex justify-content-between mb-4">
+        <h2 class="text-center alert alert-{{ alertDifficult }} rounded-pill py-2">Vidas: {{ lives }}</h2>
+        <h3 class="text-center alert alert-{{ alertDifficult }} rounded-pill py-2">Modo: {{ difficult }}</h3>
       </div>
-      <div
-        *ngIf="triedNumbers.length > 0"
-        class="card flex-row flex-wrap p-3 gap-2"
-      >
-        <span
-          class="text-bg-danger rounded-pill text-align-center px-2"
-          *ngFor="let number of triedNumbers"
-        >
-          {{ number }}
-        </span>
+
+      <div *ngIf="!gameIsOver" class="alert alert-{{ alert }} text-center rounded-pill py-3">
+        {{ message }}
+      </div>
+
+      <div class="input-group my-4 w-75 mx-auto">
+        <input [(ngModel)]="chooseNumber" type="number" class="form-control form-control-lg text-center rounded-pill" placeholder="Digite um número" min="1" [max]="amountPossibility" />
+      </div>
+
+      <div class="d-flex justify-content-center gap-3">
+        <button *ngIf="!gameIsOver" (click)="guessNumber()" class="btn btn-primary btn-lg px-4 py-2 rounded-pill">
+          Adivinhar
+        </button>
+        <button *ngIf="gameIsOver" (click)="replay()" class="btn btn-success btn-lg px-4 py-2 rounded-pill">
+          Jogar Novamente!
+        </button>
+      </div>
+
+      <div class="progress mt-4 w-100">
+        <div class="progress-bar progress-bar-striped progress-bar-animated {{ progressBarColor }} rounded-pill" role="progressbar" [style.width.%]="helperBar" [attr.aria-valuenow]="helperBar" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+
+      <h3 *ngIf="gameIsOver" class="alert alert-{{ alert }} mt-4 text-center rounded-pill py-3">
+        {{ message }}
+      </h3>
+    </div>
+
+    <div *ngIf="triedNumbers.length > 0" class="card mt-4 p-3 w-75 shadow-sm rounded-3">
+      <h5 class="text-center mb-4">Números tentados:</h5>
+      <div class="d-flex flex-wrap justify-content-center gap-2">
+        <span class="badge bg-danger p-2 rounded-pill" *ngFor="let number of triedNumbers">{{ number }}</span>
       </div>
     </div>
   </div>
